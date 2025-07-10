@@ -8,7 +8,6 @@
 
 using namespace std;
 
-// Check if the input file contains only one repeated character (ignoring CR/LF)
 bool isSingleCharFile(const string &inputFile, char &onlyChar, int &count) {
     ifstream in(inputFile, ios::binary);
     if (!in) {
@@ -16,7 +15,6 @@ bool isSingleCharFile(const string &inputFile, char &onlyChar, int &count) {
         return false;
     }
 
-    // Read entire file
     string data((istreambuf_iterator<char>(in)), istreambuf_iterator<char>());
     in.close();
 
@@ -33,7 +31,6 @@ bool isSingleCharFile(const string &inputFile, char &onlyChar, int &count) {
     return false;
 }
 
-// Write the special compressed form: 1 <count> <char>
 void writeSingleCharCompressed(const string &outFile, char onlyChar, int count) {
     ofstream out(outFile, ios::binary);
     if (!out) {
@@ -43,7 +40,6 @@ void writeSingleCharCompressed(const string &outFile, char onlyChar, int count) 
     out << "1 " << count << " " << onlyChar;
 }
 
-// Read and decompress the special form
 bool decompressSingleChar(const string &inFile, const string &outFile) {
     ifstream in(inFile, ios::binary);
     if (!in) {
@@ -72,7 +68,6 @@ int main() {
     char onlyChar = 0;
     int count     = 0;
 
-    // 1) If the file is a single repeated character, use shortcut
     if (isSingleCharFile(input, onlyChar, count)) {
         writeSingleCharCompressed(compressed, onlyChar, count);
         decompressSingleChar(compressed, decompressed);
@@ -80,7 +75,6 @@ int main() {
         return 0;
     }
 
-    // 2) Otherwise, do full Huffman compress + decompress
     compress(input, compressed);
     cout << "Compression complete.\n";
 
