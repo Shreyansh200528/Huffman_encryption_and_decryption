@@ -14,6 +14,10 @@ struct Node {
     int freq;
     Node *left, *right;
     Node(char c, int f) : ch(c), freq(f), left(nullptr), right(nullptr) {}
+    ~Node() {
+        delete left;
+        delete right;
+    }
 };
 
 struct Compare {
@@ -65,6 +69,7 @@ void compress(const string& inputFile, const string& outputFile) {
     Node* root = buildHuffmanTree(freq);
     unordered_map<char, string> codes;
     buildCodes(root, "", codes);
+    delete root;
 
     string encoded;
     for (char c : data) encoded += codes[c];
